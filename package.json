@@ -21,6 +21,7 @@
     "clear": "rimraf lib es",
     "lint-staged": "lint-staged"
   },
+  "prepublishOnly": "npm run build",
   "pre-commit": [
     "lint-staged"
   ],
