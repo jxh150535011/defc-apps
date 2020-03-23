@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target":"es2017",
+    "lib":["dom","esnext"],
+    "jsx": "preserve",
+    "outDir": "./es",
+    
+    "noImplicitAny": false,
+    "moduleResolution":"node",
+    "esModuleInterop": true,
+    "removeComments": false,
+    "sourceMap":true,
+
+    "baseUrl": ".",
+    "types" : ["node","jest"],
+
+    "declaration": false,
+    "strict":false,
+    "module":"esnext",
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "dist",
+    "es",
+    "**/*.spec.ts"
+  ]
+}
