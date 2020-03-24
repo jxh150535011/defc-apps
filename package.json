@@ -1,6 +1,6 @@
 {
   "name": "@alicloud/defc-apps",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "./lib/index.js",
   "module": "./es/index.js",
@@ -19,9 +19,9 @@
     "test:build": "NODE_ENV=production && node ./scripts/build.js",
     "test:module": "NODE_ENV=production && node ./scripts/build-module.js",
     "clear": "rimraf lib es",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "prepublishOnly": "npm install && npm run build"
   },
-  "prepublishOnly": "npm install && npm run build",
   "pre-commit": [
     "lint-staged"
   ],
