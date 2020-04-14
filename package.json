@@ -1,5 +1,5 @@
 {
-  "name": "@ali/defc-apps",
+  "name": "@alicloud/defc-apps",
   "version": "1.0.3",
   "description": "",
   "main": "./lib/index.js",
@@ -25,9 +25,6 @@
   "pre-commit": [
     "lint-staged"
   ],
-  "publishConfig": {
-    "registry": "https://registry.npm.alibaba-inc.com"
-  },
   "lint-staged": {
     "packages/**/*.{js,jsx}": [
       "eslint --ext test",
