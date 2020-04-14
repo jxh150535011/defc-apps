@@ -12,12 +12,13 @@ const webpackModuleOption = require('../config/webpackModuleOption');
 
 const upadateWebpackDevServer = (webpackConfig, webpackOption , devOption) => {
   const {scopes = []} = webpackOption;
-  const {host, port, contentBase} = devOption || {};
+  const {host, port, contentBase, proxy} = devOption || {};
   webpackConfig = webpackMerge(webpackConfig, {
     devServer:{
       host,
       port,
-      contentBase:contentBase
+      contentBase:contentBase,
+      proxy
     },
   });
 

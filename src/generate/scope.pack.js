@@ -125,7 +125,7 @@ class ScopePack {
     let webpackConfig = await genrateWebpackScopeConfig({
       ...webpackOption,
       copyOption,
-      // cleanOption:true,
+      cleanOption:true,
       chainOption:setupConfig.chain
     });
     const buildName = '路由';

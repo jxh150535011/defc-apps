@@ -90,7 +90,8 @@ class WebappPack {
       port:webappConfig.port,
       host:webappConfig.host,
       contentBase:webappConfig.contentBase,
-      middleware:this.middleware
+      middleware:this.middleware,
+      ...(webappConfig.devServer || {})
     };
 
     /** 拷贝资源关系 */

@@ -210,13 +210,12 @@ module.exports = {
    * entry 格式状态 很多，现在将其统一转换 {name, files}
    * @param {*} entry 
    */
-  entryToModules(entry, attrs) {
+  entryToModules(entry, name) {
     if(!entry) return [];
     if(typeof entry === 'string') {
       return [{
-        name: '',
-        files: [entry],
-        ...attrs
+        name: name || '',
+        files: [ entry ],
       }]
     }
     if(entry instanceof Array) {

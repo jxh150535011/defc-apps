@@ -16,7 +16,6 @@ const updateEntryLibrary = (library, webpackConfig, webpackOption) => {
 
   let libraryTarget = 'var';
   let filename = `[name].js`;// _[hash:4]
-
   return webpackMerge(webpackConfig,{
     context,
     output: {
@@ -44,7 +43,7 @@ module.exports = async function (webpackOption) {
   } = webpackOption;
 
   // 增加name 防止 类名冲突
-  let library = name ? `${name}_[name]_[hash:4]`: `[name]_[hash:4]`;
+  let library = name ? `${name}`: `[name]_[hash:4]`;
 
   const { manifests } = packUtility.composeDllPackAsset(dllPackAssets);
 
