@@ -1,6 +1,6 @@
 const path = require('path');
 const md5 = require('md5');
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 // version 影响生成版本规则
 const { root, cwd, host, port, version, meta } = require('./env');
 

@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 const WebpackLibPlugin = require('../plugins/webpack.lib.plugin.js');
 const genrateWebpackDllConfig = require('./generate.webpack.dll.config');
 const packUtility = require('./pack.utility');

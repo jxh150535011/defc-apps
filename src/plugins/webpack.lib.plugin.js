@@ -3,7 +3,7 @@ const path = require('path');
 const util = require('util');
 const webpack = require('webpack');
 const terser = require('terser');
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 const config = require('../config');
 
 

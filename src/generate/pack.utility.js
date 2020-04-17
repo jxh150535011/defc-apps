@@ -1,7 +1,7 @@
 const path = require('path');
 const url = require('url');
 const webpack = require('webpack');
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 const {BuildStateEnum, BuildTypeEnum} = require('../enum');
 
 module.exports = {

@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const md5 = require('md5');
 const util = require('util');
-const utility = require('./common/utility');
+const utility = require('../common/utility');
 
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');

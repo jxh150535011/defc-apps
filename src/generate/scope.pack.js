@@ -5,7 +5,7 @@ const webpackDevServer = require('webpack-dev-server');
 const {BuildStateEnum, BuildTypeEnum, PackTypeEnum} = require('../enum');
 const config = require('../config');
 const packUtility = require('./pack.utility');
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 const genrateWebpackScopeConfig = require('./generate.webpack.scope.config');
 
 

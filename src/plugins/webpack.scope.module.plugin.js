@@ -1,7 +1,7 @@
 const path = require('path');
 const url = require('url');
 const { ConcatSource } = require("webpack-sources");
-const utility = require('../common/utility');
+const utility = require('../../common/utility');
 
 /**
  * 只针对所有入口js 进行依赖注入

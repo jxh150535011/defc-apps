@@ -1,6 +1,6 @@
 import requirejs from 'requirejs';
 // 默认都从 lib 用引用
-import matchRoute from '../../lib/common/matchRoute';
+import matchRoute from '../../common/matchRoute';
 
 // 加载时间上线
 const MAX_TIME_OUT = 30 * 1000;
