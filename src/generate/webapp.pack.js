@@ -91,7 +91,7 @@ class WebappPack {
       host:webappConfig.host,
       contentBase:webappConfig.contentBase,
       middleware:this.middleware,
-      ...(webappConfig.devServer || {})
+      devServer:webappConfig.devServer
     };
 
     /** 拷贝资源关系 */

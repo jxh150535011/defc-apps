@@ -9,7 +9,7 @@ const { root, cwd } = require('./env');
 
 // webpack 动态加载器路径
 const dynamicWebpackLoaderPath = path.resolve(__dirname, '../loaders/webpack.dynamic.loader.js');
-
+const antdDir = path.resolve(require.resolve('antd'), '../../');
 // loader 部分包 因为依赖问题 可能不存在执行环境目录下，所以统一改成路径下寻找
 
 const WebpackTestPlugin = require('../plugins/webpack.test.plugin.js');
@@ -36,13 +36,33 @@ const createWebpackConfig = () => {
       rules: [
         {
           test: /\.(less|css)$/,// |scss
+          include:[
+            antdDir
+          ],
+          use: [
+            webpackModuleOption.modules['style-loader'],
+            webpackModuleOption.modules['css-loader'],
+            webpackModuleOption.modules['less-loader'],
+            // ,'sass-loader' 'postcss-loader'
+          ],
+        },
+        {
+          test: /\.(less|css)$/,// |scss
+          exclude:[
+            antdDir
+          ],
           use: [
             // 'extracted-loader',
             // {
             //  loader: MiniCssExtractPlugin.loader,
             // },
             webpackModuleOption.modules['style-loader'],
-            webpackModuleOption.modules['css-loader'],
+            {
+              loader: webpackModuleOption.modules['css-loader'],
+              options: {
+                  modules: true,
+              },
+            },
             webpackModuleOption.modules['less-loader'],
             // ,'sass-loader' 'postcss-loader'
           ],
