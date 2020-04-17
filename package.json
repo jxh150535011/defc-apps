@@ -1,12 +1,13 @@
 {
   "name": "@alicloud/defc-apps",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "./src/index.js",
   "module": "./es/index.js",
   "files": [
     "lib/",
     "es/",
+    "src/",
     "template/",
     "client/"
   ],
