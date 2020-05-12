@@ -4,7 +4,7 @@
 
 
 const moduleNames = [
-  'babel-loader', 'ts-loader', 'file-loader','url-loader', 'mini-css-extract-plugin', 'extract-loader', // ,'extracted-loader',
+  'babel-loader', 'ts-loader', 'file-loader','url-loader', 'mini-css-extract-plugin', // , 'extract-loader' ,'extracted-loader',
   '@babel/preset-env', '@babel/preset-react',
   '@babel/plugin-proposal-decorators', '@babel/plugin-transform-runtime',
   '@babel/plugin-syntax-dynamic-import', '@babel/plugin-syntax-import-meta',
