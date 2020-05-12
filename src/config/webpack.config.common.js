@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpackModuleOption = require('./webpackModuleOption');
 const { root, cwd } = require('./env');
 
@@ -35,7 +36,7 @@ const createWebpackConfig = () => {
       strictExportPresence: true, // 使缺少的导出出现错误而不是警告
       rules: [
         {
-          test: /\.(less|css)$/,// |scss
+          test: /\.less$/,// |scss
           include:[
             antdDir
           ],
@@ -47,15 +48,18 @@ const createWebpackConfig = () => {
           ],
         },
         {
-          test: /\.(less|css)$/,// |scss
+          test: /\.less$/,// |scss
           exclude:[
             antdDir
           ],
           use: [
-            // 'extracted-loader',
             // {
-            //  loader: MiniCssExtractPlugin.loader,
+            //   loader: webpackModuleOption.modules['file-loader'],
+            //   options: {
+            //     name: 'assets/[name].[ext]',
+            //   },
             // },
+            // webpackModuleOption.modules['extract-loader'],
             webpackModuleOption.modules['style-loader'],
             {
               loader: webpackModuleOption.modules['css-loader'],
@@ -64,8 +68,17 @@ const createWebpackConfig = () => {
               },
             },
             webpackModuleOption.modules['less-loader'],
-            // ,'sass-loader' 'postcss-loader'
           ],
+        },
+        {
+          test: /\.css$/,
+          use: [
+            // {
+            //   loader: MiniCssExtractPlugin.loader,
+            // },
+            webpackModuleOption.modules['style-loader'],
+            webpackModuleOption.modules['css-loader'],
+          ]
         },
         {
           test: /\.js$/,// template 中的文件特殊处理
@@ -152,6 +165,10 @@ const createWebpackConfig = () => {
       new webpack.BannerPlugin({
         banner: `hash:[hash], lastmodify:${new Date(new Date().getTime() + 8 * 3600 * 1000).toISOString()}\r\n`,
       }),
+      // new MiniCssExtractPlugin({
+      //   filename: '[name].css',
+      //   chunkFilename: '[id].css',
+      // }),
     ],
     externals: []
     /**

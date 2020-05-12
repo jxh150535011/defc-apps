@@ -24,7 +24,7 @@ const injectDeps = (compilation, assets, chunk, deps) => {
   // const source = asset.source();
 
   const strDeps = depFiles.map(file => `'${file}'`).join(',');
-
+  
   compilation.updateAsset(
     fileName,
     old => new ConcatSource(

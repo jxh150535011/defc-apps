@@ -3,6 +3,7 @@ import { useAsync } from 'react-use';
 import { NavLink } from "react-router-dom";
 import {Button} from 'antd';
 import './index.less';
+import './index.css';
 
 const prefix = 'ui-demo-block'
 
@@ -39,7 +40,7 @@ const AsynComponent = (props) => {
 export default () => {
   return (
     <div className={prefix}>
-      <div>
+      <div className="global-index">
         index私有模块
         <AsynComponent component={() => import('./com')} />
       </div>

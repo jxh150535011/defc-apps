@@ -33,12 +33,14 @@ module.exports = (isDev) => {
           poll: true,
           ignored: /node_modules/, // 忽略的文件夹
         },
+        /*
         before(app) {
           app.use(bodyParser.urlencoded({
             extended:true
           }));
           app.use(bodyParser.json());
         },
+        */
         historyApiFallback: {// 失败返回index.html
           rewrites: [{
             from: /.*/g,
