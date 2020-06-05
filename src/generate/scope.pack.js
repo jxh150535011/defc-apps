@@ -70,9 +70,8 @@ class ScopePack {
    * 创建初始化 entry 信息
    */
   createRouterEntry() {
-    const setupConfig = this.setupConfig;
-    const scopeOption = this.scopeOption;
-    const { registryRouterName } = setupConfig.setting;
+    const { registry } = scopeOption;
+    if (!registry) return null;
     const routes = scopeOption.routes.map(route => {
       return {
         path: route.pathname,
@@ -86,7 +85,7 @@ class ScopePack {
       routes: encodeURIComponent(JSON.stringify(routes))
     };
     const entry = {
-      [registryRouterName]: config.clientRouterTemplateLoaderPath + '?' + Object.keys(loaderParams).map(key => `${key}=${loaderParams[key]}`).join('&')
+      [registry]: config.clientRouterTemplateLoaderPath + '?' + Object.keys(loaderParams).map(key => `${key}=${loaderParams[key]}`).join('&')
     }
 
     return entry;
@@ -99,7 +98,8 @@ class ScopePack {
     const scopeOption = this.scopeOption;
     const setupConfig = this.setupConfig;
     const { dllAssetsName } = setupConfig.setting;
-    const entry = this.createRouterEntry();
+    const entry = this.createRouterEntry(scopeOption);
+    if (!entry) return ; // 没有产生entry 不进行编译router
     const webpackOption = await this.getWebpackOption(entry, {
       buildType: BuildTypeEnum.REGISTRY_MODULE
     });

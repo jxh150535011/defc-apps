@@ -72,7 +72,7 @@ module.exports = {
     const gatewayScopeName = '__gateway_scope';// 网关保留字 scope内部表示
     const moduleAssetsName = 'modules';
     const cacheAssetsName = 'cache';
-    const registryRouterName = 'router'; // 注册入口的名称
+    const registryRouterName = 'router'; // 默认注册入口的名称
 
     const gatewayHost = `http://${host}${port === 80 ? '' : (':' + port)}`;
     
@@ -170,7 +170,7 @@ module.exports = {
   },
   initScopeOptions(setupConfig) {
     const {setting, isDev} = setupConfig;
-    const { gatewayServiceHost, moduleAssetsName } = setting;
+    const { gatewayServiceHost, moduleAssetsName, registryRouterName } = setting;
     const registryScope = setupConfig.registry || {};
     const processScope = setupConfig.process || {};
 
@@ -194,6 +194,11 @@ module.exports = {
 
       if(isDev && processScope[name]) {// 对remote 进行替换
         scope.remote = `${gatewayServiceHost}/${scope.id}`
+      }
+      // 检查注册器 如果允许注册 并且
+      if (scope.registry !== false) {
+        // 如果注册器 没有明确拒绝 并且未指定默认值 使用 registryRouterName ,否则 使用注册器默认的路由
+        scope.registry = (!scope.registry || scope.registry === true) ? registryRouterName : scope.registry;
       }
       // 设置文件根目录
       scope.context = scope.context || setupConfig.context || cwd;
@@ -263,12 +268,12 @@ module.exports = {
     // 内置的集成框架
     const paths = {};
     scopes.forEach(scope => {
-      const {id, name, remote} = scope;
+      const {id, name, remote, registry} = scope;
       paths[name] = {
         id,
         name,
         remote,
-        registry:setting.registryRouterName
+        registry
       }
     });
 

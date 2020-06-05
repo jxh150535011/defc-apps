@@ -64,7 +64,9 @@ const createWebpackConfig = () => {
             {
               loader: webpackModuleOption.modules['css-loader'],
               options: {
-                  modules: true,
+                modules: {
+                  localIdentName: '[name]---[local]---[hash:base64:4]'
+                },
               },
             },
             webpackModuleOption.modules['less-loader'],

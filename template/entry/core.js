@@ -148,6 +148,10 @@ export const getRegistry = async (scopeName) => {
   if(!scope) return; // 没有注册过头部 则直接拒绝
   // 是否已经注册加载 
   if(initRegistryScope[scopeName]) return initRegistryScope[scopeName];
+  if (!scope.registry) { // 如果 registry 不存在 说明没有注册路由直接使用默认的当前对象返回
+    initRegistryScope[scopeName] = scope;
+    return scope;
+  }
   initRegistryScope[scopeName] = (async () => {
     const result = await request(resolveUrl(scope.remote, scope.registry));
     // request 加载 registry 后， 默认会直接注册
