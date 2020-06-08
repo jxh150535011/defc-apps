@@ -69,7 +69,7 @@ class ScopePack {
   /**
    * 创建初始化 entry 信息
    */
-  createRouterEntry() {
+  createRouterEntry(scopeOption) {
     const { registry } = scopeOption;
     if (!registry) return null;
     const routes = scopeOption.routes.map(route => {
