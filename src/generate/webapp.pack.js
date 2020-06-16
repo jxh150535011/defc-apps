@@ -15,6 +15,30 @@ class WebappPack {
     this.dllPack = dllPack;
     this.middleware = middleware;
   }
+
+  converToTemplates(template) {
+    let templates = [];
+    if (typeof template === 'string') {
+      // 默认 filename: 'index.html',
+      templates.push({
+        template
+      });
+    } else if (typeof template === 'object'){
+      templates = Object.keys(template).map(name => {
+        const value = (typeof template[name] === 'string') ? {template: template[name]} : template[name];
+        return {
+          filename: `${name}.html`,
+          ...value
+        }
+      })
+    } else if (template instanceof Array){
+      templates = template.map(value => {
+        return (typeof value === 'string') ? {template: value} : value;
+      });
+    }
+    return templates;
+  }
+
   async getWebpackOption(options) {
 
     const setupConfig = this.setupConfig;
@@ -54,7 +78,7 @@ class WebappPack {
     });
 
     const htmlOption = {
-      template: webappConfig.template,
+      templates: this.converToTemplates(webappConfig.template),
       assets: gatewayPackAssetFiles[scopeConfig.name],
     };
 

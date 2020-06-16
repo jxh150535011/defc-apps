@@ -22,8 +22,16 @@ module.exports = {
   ],
   webapp: {
     context: path.join(__dirname, '../gateway'),
-    entry: './src/index.jsx',
-    tempalte: './src/index.html',
+    entry: {
+      index: './src/index.jsx',
+      sandbox: './src/sandbox.jsx'
+    },
+    template: {
+      index: './src/index.html',
+      sandbox: {
+        template: './src/sandbox.html'
+      }
+    },
     contentBase: path.join(__dirname, '../public'),
     assets: {
       '/static': path.join(__dirname, '../static')

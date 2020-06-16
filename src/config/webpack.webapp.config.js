@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const bodyParser = require('body-parser');
 const commonConfig = require('./webpack.config.common');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 /**
@@ -17,12 +16,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (isDev) => {
   const webpackConfig = commonConfig(isDev, {
     plugins: [
-      new HtmlWebpackPlugin({
-        minify:{
-         removeComments:true//清除注释
-        },
-        inject: true,
-      })
+      
     ]
   });
   if(isDev) {

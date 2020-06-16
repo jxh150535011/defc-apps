@@ -1,5 +1,4 @@
 const url = require('url');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 class WebpackHtmlDllPlugin {
   constructor({files}) {

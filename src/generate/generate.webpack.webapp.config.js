@@ -10,10 +10,33 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const WebpackHtmlDllPlugin = require('../plugins/webpack.html.dll.plugin.js');
 const webpackModuleOption = require('../config/webpackModuleOption');
 
-const upadateWebpackDevServer = (webpackConfig, webpackOption , devOption) => {
-  const {scopes = []} = webpackOption;
+const upadateWebpackDevServer = (webpackConfig, webpackOption , devOption, htmlOption) => {
+  const {scopes = [], output} = webpackOption;
   const {host, port, contentBase, devServer} = devOption || {};
+  const { templates = [] } = htmlOption || {};
+  
+  const createProxy = (item) => {
+    // 如果当前html 有代理配置 直接使用代理配置
+    if (item.proxy) return item.proxy;
+    else if(item.filename && item.filename !== 'index.html') { // 如果存在有专门定义的filename 给它提供额外的路由的映射
+      const prefix = `/${item.filename.replace('.html', '')}`;
+      return {
+        context: prefix,
+        bypass: function(req, res, proxyOptions) {
+          if (req.url.indexOf(prefix) === 0) {
+            return `/${item.filename}`
+          }
+        }
+      }
+    }
+  }
+  
+  const proxy =  templates.map(createProxy).filter(p => !!p);
   webpackConfig = webpackMerge(webpackConfig, {
+    devServer: {
+      proxy: proxy.length ? proxy : undefined
+    }
+  }, {
     devServer:{
       host,
       port,
@@ -32,8 +55,8 @@ const upadateWebpackDevServer = (webpackConfig, webpackOption , devOption) => {
  * 更新webpack html plugin
  */
 const updateWebpackHtmlPluginOption = (webpackConfig, webpackOption, htmlOption) => {
-  const {output} = webpackOption;
-  const {template, assets = []} = htmlOption || {};
+  const { output } = webpackOption;
+  const { templates = [] , assets = []} = htmlOption || {};
   const proxyWebpackHtmlPluginTemplateParameters = (templateParameters, context) => {
     // templateParameters, context
     if(typeof templateParameters === 'function') {
@@ -49,18 +72,26 @@ const updateWebpackHtmlPluginOption = (webpackConfig, webpackOption, htmlOption)
       ...context
     }
   }
+
   // 调整 HtmlWebpackPlugin 配置
-  let htmlWebpackPlugin = (webpackConfig.plugins || []).find(p => p instanceof HtmlWebpackPlugin);
-  if(!htmlWebpackPlugin) return;
-  const htmlWebpackPluginOptions = htmlWebpackPlugin.options;
-  htmlWebpackPluginOptions.templateParameters = proxyWebpackHtmlPluginTemplateParameters(htmlWebpackPluginOptions.templateParameters, {
-    meta: {
-      title:htmlWebpackPluginOptions.title
-    }
-  });
-  if(template) {
-    htmlWebpackPluginOptions.template = template;
-  }
+  const htmlPlugins = templates.map(item => {
+    // 预留
+    // item.templateParameters = proxyWebpackHtmlPluginTemplateParameters(item.templateParameters, {
+    //   meta: {
+    //     title: ''
+    //   }
+    // })
+    const entry = (item.filename || '').replace(/[.]html/i, '') || 'index';
+    return  new HtmlWebpackPlugin({
+      minify:{
+       removeComments:true//清除注释
+      },
+      chunks: [entry ,'vendors'], // 默认注入chunks 入口
+      inject: true,
+      ...item
+    })
+  })
+  webpackConfig.plugins = (webpackConfig.plugins || []).concat(htmlPlugins);
 
   // 添加自身相关的依赖内容
   if(assets.length) {
@@ -150,7 +181,7 @@ module.exports = async function (webpackOption) {
 
   if(devOption) {
     // 如果是开发模式  则注入 中间件
-    webpackConfig = upadateWebpackDevServer(webpackConfig, webpackOption, devOption);
+    webpackConfig = upadateWebpackDevServer(webpackConfig, webpackOption, devOption, htmlOption);
   }
 
   // 更新清空插件
