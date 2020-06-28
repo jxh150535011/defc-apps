@@ -24,7 +24,6 @@ class ScopePack {
     const { registryRouterName, dllAssetsName } = setupConfig.setting;
 
     const {
-      externals,
       dir_node_modules,
     } = setupConfig;
 
@@ -32,7 +31,7 @@ class ScopePack {
       ...setupConfig.loaderOption,
       ...scopeOption.loaderOption,
     };
-
+    
     const alias = {
       ...scopeOption.alias,
       ...setupConfig.alias
@@ -56,7 +55,7 @@ class ScopePack {
       entry,
       output: scopeOption.output,
       alias,
-      externals,
+      externals: scopeOption.externals,
       dir_node_modules,
       manifests, // 打包文件依赖关系
       deps:{ // 具体入口依赖加载关系

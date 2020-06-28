@@ -4,6 +4,7 @@ const DllPack =  require('./generate/dll.pack.js');
 const ScopePack =  require('./generate/scope.pack.js');
 const WebappPack =  require('./generate/webapp.pack.js');
 const packUtility = require('./generate/pack.utility.js');
+const utility = require('../common/utility');
 const mimeMiddleware = require('./generate/mime.middleware.js');
 
 const {BuildStateEnum, BuildTypeEnum, PackTypeEnum} = require('./enum');
@@ -18,9 +19,9 @@ const createDllInstance = (scopeOption, setupConfig, dllPackAssets) => {
   }
 
   return new DllPack(dllOption, {
-    externals: setupConfig.externals,
     dir_node_modules: setupConfig.dir_node_modules,
     loaderOption,
+    externals: setupConfig.externals,
     chainOption: setupConfig.chain
   }, dllPackAssets);
 };
@@ -40,20 +41,12 @@ class ModulesPack {
   async init(fn) {
     const {
       scopes = [], process = {},
-      externals, dir_node_modules,
     } = this.setupConfig;
 
     // 当前打包dll 文件资源
     const dllPackAssets = [
       await this.gatewayDllPack.getAsset()
     ];
-
-    // dll 默认配置，不同scope 之间的 dll manifest 配置 不共享
-    const dllSettingOption = {
-      externals,
-      dir_node_modules,
-      dllPackAssets
-    };
 
     for(let i =0, len = scopes.length;i < len ;i ++ ) {
       const scope = scopes[i];

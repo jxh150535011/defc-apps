@@ -308,6 +308,16 @@ function merge(memo, config) {
   });
   return result;
 }
+function mergeToArray(...args) {
+  return args.reduce((memo, item) => {
+    if (!item) return memo;
+    if(item instanceof Array) {
+      return memo.concat(item);
+    }
+    memo.push(item)
+    return memo;
+  }, [])
+}
 
 function bindPromise(context,fn) {
   return async (...args) => {
@@ -341,6 +351,7 @@ module.exports = {
   matchRoute,
   bindPromise,
   merge,
+  mergeToArray,
   resolve,
   timeLog,
   escapeStringRegexp,

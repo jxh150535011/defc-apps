@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
 const {BuildStateEnum, BuildTypeEnum} = require('../enum');
 const config = require('../config');
+const utility = require('../../common/utility');
 const packUtility = require('./pack.utility');
 const genrateWebpackWebappConfig = require('./generate.webpack.webapp.config');
 
@@ -43,7 +44,6 @@ class WebappPack {
 
     const setupConfig = this.setupConfig;
     const {
-      externals,
       dir_node_modules,
       setting,
     } = setupConfig;
@@ -91,7 +91,7 @@ class WebappPack {
       entry: webappConfig.entry,
       output: webappConfig.output,
       alias,
-      externals,
+      externals: gatewayScopeOption.externals,
       dir_node_modules,
       manifests,
       scopes: setupConfig.scopes || [], // 注入scopes

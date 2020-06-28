@@ -14,7 +14,7 @@ class DllPack {
   /**
    * {output, webpackGroups : [{ id type modules manifests }], name} 
    * @param {*} dllConfig ,
-   * @param {*} settingOption , {externals, dir_node_modules}
+   * @param {*} settingOption , { dir_node_modules, externals}
    */
   constructor(dllConfig, settingOption, dllPackAssets) {
     this.settingOption = settingOption;

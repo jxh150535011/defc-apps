@@ -18,7 +18,6 @@ const clientScopeTemplateLoaderPath = path.resolve(root, './template/loaders/sco
 // 路由注册 模板 路径
 const clientRouterTemplateLoaderPath = path.resolve(root, './template/loaders/router.tpl');
 
-
 module.exports = {
   root, cwd, meta,
   BuildTypeEnum,
@@ -110,11 +109,6 @@ module.exports = {
           '/service-worker.js': path.join(root, './template/assets/service-worker.js')
         },
       },
-      externals: [
-        {
-          'requirejs':'requirejs'
-        }
-      ],
       dir_node_modules: [// 默认优先级 模块加载位
         path.resolve(root, './node_modules'),
       ],
@@ -124,7 +118,14 @@ module.exports = {
         }
        */
     };
+    
     const config = utility.merge(setupConfig, configOptions);
+    // merge 不支持数组 对象融合 针对 externals 额外执行合并操作
+    config.externals = utility.mergeToArray([
+      {
+        'requirejs':'requirejs'
+      }
+    ], config.externals);
     config.scopes = this.initScopeOptions(config);
     config.gateway = this.initGatewayOptions(config);
 
@@ -139,7 +140,7 @@ module.exports = {
     return config;
   },
   initGatewayOptions(setupConfig) {
-    const { webapp, setting } = setupConfig;
+    const { webapp, setting, externals } = setupConfig;
     const { gatewayHost, gatewayScopeName } = setting;
     const context = webapp.context || cwd;
 
@@ -147,6 +148,7 @@ module.exports = {
     const scope = { // gateway 网关 一个特殊的scope
       id:0,
       libs,
+      externals: utility.mergeToArray(externals, webapp.externals),
       alias:webapp.alias,
       name: gatewayScopeName,
       remote: webapp.remote || '/', // gatewayHost
@@ -164,12 +166,13 @@ module.exports = {
     );
     return this.createDllOption({
       context: scope.context,
+      externals: scope.externals,
       name: scope.name,
       output: path.join(cache.output, webappAssetsName, dllAssetsName)
     }, modules);
   },
   initScopeOptions(setupConfig) {
-    const {setting, isDev} = setupConfig;
+    const {setting, isDev, externals} = setupConfig;
     const { gatewayServiceHost, moduleAssetsName, registryRouterName } = setting;
     const registryScope = setupConfig.registry || {};
     const processScope = setupConfig.process || {};
@@ -200,6 +203,7 @@ module.exports = {
         // 如果注册器 没有明确拒绝 并且未指定默认值 使用 registryRouterName ,否则 使用注册器默认的路由
         scope.registry = (!scope.registry || scope.registry === true) ? registryRouterName : scope.registry;
       }
+      scope.externals = utility.mergeToArray(externals, scope.externals);
       // 设置文件根目录
       scope.context = scope.context || setupConfig.context || cwd;
       if(!scope.output) {
@@ -241,6 +245,7 @@ module.exports = {
     const modules = this.entryToModules(scope.libs);
     return this.createDllOption({
       context: scope.context,
+      externals: scope.externals,
       name: scope.name,
       output: path.join(cache.output, moduleAssetsName, scope.name, dllAssetsName)
     }, modules);
@@ -313,7 +318,7 @@ module.exports = {
    * @param {*} option {output,name}
    */
   createDllOption(option, modules = []) {
-    const { output,name, context } = option;
+    const { output,name, context, externals } = option;
     const dllOption = {
       name,
       output,
@@ -351,7 +356,7 @@ module.exports = {
       return memo;
     },[]);
     // 给每个打包分组 版本 都依赖于所有之前的版本是否发生改变
-    let memoVersion = [ version ];
+    let memoVersion = [ version, externals ]; // externals 影响版本构建
     dllOption.webpackGroups.forEach(webpackGroup => {
       // 为内置模块
       // let version = memoVersion.concat([ webpackGroup.version ]).concat(webpackGroup.modules.map(p => p.hash)).join(',');
