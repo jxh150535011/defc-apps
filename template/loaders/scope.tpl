@@ -35,6 +35,9 @@ if(pathname && pathname !== '/' ) {
     },
     get registry() {
       return getRegistry(scope);
+    },
+    setRegistry(scopeObj) {
+      return registry(scope, scopeObj);
     }
   }
 }
