@@ -25,7 +25,6 @@ const AsynComponent = (props) => {
       <div>Error {JSON.stringify(result.error)}</div>
     );
   }
-  console.log(111, result);
   const View = result.value && result.value.default;
   if(View instanceof React.Component || typeof View === 'function') {
     return (

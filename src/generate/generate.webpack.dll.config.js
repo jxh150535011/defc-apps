@@ -51,7 +51,7 @@ module.exports = async function (webpackOption) {
   // umd 模式的依赖的 默认都会直接使用 var 形式注入
   let webpackConfig = config.webpackDllConfig(webpackOption.isDev);
   webpackConfig = updateEntryLibrary(library, webpackConfig, webpackOption);
-  console.log(111, entry, webpackConfig.externals);
+  // console.log(111, entry, webpackConfig.externals);
   const plugins = webpackConfig.plugins || []; // 设置 plugins dll
   webpackConfig.plugins = plugins.concat([
     ...manifests.map(file => {
