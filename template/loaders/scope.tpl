@@ -7,9 +7,8 @@ import {request, config, registry, getRoute, resolveUrl, getScope, getRegistry} 
 const scope = '${scope || ""}'.replace(/[\/]+$/g,'');
 const pathname = '/' + ('${pathname || ""}').replace(/^([\/]+|[.][\/]+)/g,'');
 
-const scopeObj = getScope(scope);
-
 const invokenAsync = async (pathname = '') => {
+  const scopeObj = getScope(scope);
   let url;
   if(!scopeObj) {
     url = resolveUrl(scope, pathname);
